@@ -1,40 +1,48 @@
-// 🧨 Unused variables
-const unusedVar = 42;
-let temp = "not used";
-const config = { debug: true };
+// 🧨 Unused import
+import fs from 'fs';
 
-// 🐞 Logic bug: always true
-function isAdmin(user) {
-  if (user.role = "admin") { // assignment instead of comparison
+// 🧨 Unused variable
+const debugMode = true;
+
+// 🐞 Bug: wrong comparison operator
+function isEven(num) {
+  if (num % 2 = 0) { // assignment instead of comparison
     return true;
   }
   return false;
 }
 
-// 🔐 Vulnerability: unsafe eval
-function runUserCode(code) {
-  eval(code); // dangerous: allows arbitrary code execution
+// 🔐 Vulnerability: insecure HTTP
+function fetchUserData(userId) {
+  fetch(`http://example.com/api/user/${userId}`) // should be HTTPS
+    .then(res => res.json())
+    .then(data => console.log(data));
 }
 
-// 🔐 Vulnerability: unsanitized DOM injection
-function renderMessage(message) {
-  document.getElementById("output").innerHTML = message; // XSS risk
+// 🔐 Vulnerability: weak input validation
+function login(username, password) {
+  if (!username || !password) {
+    console.log("Missing credentials");
+    return;
+  }
+  // No sanitization, no hashing, no rate limiting
+  console.log(`Logging in ${username} with password ${password}`);
 }
 
-// 🐞 Bug: unreachable code
-function greet(name) {
-  return `Hello, ${name}`;
-  console.log("This will never run");
+// 🐞 Bug: shadowed variable
+function processData(data) {
+  let result = "initial";
+  if (data) {
+    let result = "processed"; // shadows outer variable
+    console.log(result);
+  }
+  return result; // returns "initial" even if data exists
 }
 
-// 🧨 Unused function
-function legacyFunction() {
-  console.log("Deprecated logic");
-}
-
-// 🐞 Bug: inconsistent return
-function getUser(id) {
-  if (!id) return;
-  if (id === 1) return { name: "Badr" };
-  // missing return for other cases
+// 🧪 Poor testability: side effects in constructor
+class User {
+  constructor(name) {
+    this.name = name;
+    console.log(`User created: ${name}`); // side effect
+  }
 }
